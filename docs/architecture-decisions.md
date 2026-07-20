@@ -57,3 +57,27 @@ This document records decisions made for the ecommerce-microservices project.
 **Decision:** Checkout is not a separate persisted business entity in V1. The cart owns the responsibilities of reviewing items, confirming an address, applying future discounts, and showing the final price. An order is created only when the customer proceeds to payment.
 
 **Reason:** Checkout does not currently need an independent lifecycle; introducing it would add complexity without a business capability that the cart cannot provide. Revisit this if future requirements require resumable or separately managed checkout sessions.
+
+## Decision 008: Use a Monorepo for the Microservices
+
+**Status:** Accepted
+
+**Decision:** Keep all microservices in this repository under `services/`. Each service remains an independent Maven project and can be built and deployed independently. Shared repository configuration, such as `.gitignore`, `.gitattributes`, and project documentation, remains at the repository root.
+
+**Reason:** A monorepo keeps cross-service documentation and local development manageable without preventing independent builds or deployments. It avoids repository-management overhead while the project is growing.
+
+## Decision 009: Use Spring Boot Managed Dependencies
+
+**Status:** Accepted
+
+**Decision:** Use the latest stable, supported Spring Boot 4.1.x release as the parent for new services. Rely on Spring Boot's dependency management for managed libraries and omit dependency versions unless an override is intentional and documented.
+
+**Reason:** The Spring Boot BOM supplies a tested set of compatible dependency versions, reducing version conflicts and making upgrades deliberate.
+
+## Decision 010: Package Services as Executable JARs
+
+**Status:** Accepted
+
+**Decision:** Package each Spring Boot microservice as an executable JAR with its embedded server, rather than as a WAR for deployment to an external application server.
+
+**Reason:** Executable JARs keep services independently runnable and deployable, and are the appropriate packaging model for later Docker and container-orchestrated deployments.
