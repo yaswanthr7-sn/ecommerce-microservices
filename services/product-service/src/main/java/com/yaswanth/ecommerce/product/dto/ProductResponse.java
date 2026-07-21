@@ -1,13 +1,10 @@
 package com.yaswanth.ecommerce.product.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 public class ProductResponse {
 
     UUID id;
