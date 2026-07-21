@@ -81,3 +81,19 @@ This document records decisions made for the ecommerce-microservices project.
 **Decision:** Package each Spring Boot microservice as an executable JAR with its embedded server, rather than as a WAR for deployment to an external application server.
 
 **Reason:** Executable JARs keep services independently runnable and deployable, and are the appropriate packaging model for later Docker and container-orchestrated deployments.
+
+## Decision 011: Introduce Service Interfaces Only When Needed
+
+**Status:** Accepted
+
+**Decision:** Do not create `Service`/`ServiceImpl` pairs by default. Introduce an interface only when it serves a concrete need, such as multiple implementations, an explicit boundary, a testing strategy, or a framework requirement.
+
+**Reason:** A single implementation does not justify an additional abstraction. This keeps the codebase focused while preserving the option to add an interface when it solves a real problem.
+
+## Decision 012: Each Microservice Owns Its Database
+
+**Status:** Accepted
+
+**Decision:** Each microservice owns a separate database and must not access another service's tables directly. During development, the separate databases may run on the same PostgreSQL server or container.
+
+**Reason:** Data ownership keeps service boundaries clear and prevents direct database coupling. Sharing a PostgreSQL server locally avoids unnecessary operational overhead without compromising database-per-service isolation.
