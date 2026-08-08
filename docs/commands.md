@@ -1,9 +1,10 @@
 ### Docker ###
-# Start the docker - helps in creating if not found, starting if it exists
+# Start the docker - helps in creating if not found, starting if it exists #
+cd infra
 docker compose up -d
 
-# Status Check
+# Status Check #
 docker ps
 
-# logs
+# logs #
 docker logs ecommerce-postgres
