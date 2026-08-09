@@ -1,10 +1,12 @@
 package com.yaswanth.ecommerce.product.controller;
 
-import com.yaswanth.ecommerce.product.ProductService;
+import com.yaswanth.ecommerce.product.dto.ProductRequest;
 import com.yaswanth.ecommerce.product.dto.ProductResponse;
+import com.yaswanth.ecommerce.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,7 +17,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public List<ProductResponse> getProducts(){
+    public List<ProductResponse> getProducts() {
         return productService.getProducts();
+    }
+
+    @PostMapping("/products")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductResponse createProduct(@Valid @RequestBody ProductRequest productRequest) {
+        return productService.createProduct(productRequest);
     }
 }
