@@ -129,7 +129,7 @@ class ProductControllerTest {
                     "name": "Samsung",
                     "price": 59999,
                     "currency": "INR",
-                    "description": "Test Product",
+                    "description": "Test Product"
                 }
                 """;
 
