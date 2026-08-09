@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor(access=AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "products")
 public class Product {
@@ -29,7 +29,7 @@ public class Product {
     @Column(nullable = false, length = 3)
     private String currency;
 
-    @Column(nullable = false, length = 2000)
+    @Column(length = 2000)
     private String description;
 
     @Column(nullable = false)
@@ -37,5 +37,14 @@ public class Product {
 
     @Column(nullable = false)
     private Boolean active;
+
+    public Product(String name, BigDecimal price, String currency, String description, Integer availableQuantity) {
+        this.name = name;
+        this.price = price;
+        this.currency = currency;
+        this.description = description;
+        this.availableQuantity = availableQuantity;
+        this.active = true;
+    }
 
 }
