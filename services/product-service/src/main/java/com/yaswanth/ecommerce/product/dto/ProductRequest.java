@@ -16,6 +16,7 @@ public class ProductRequest {
 
     @NotNull
     @DecimalMin(value = "0.01")
+    @Digits(integer = 17, fraction = 2)
     private BigDecimal price;
 
     @NotBlank
@@ -25,6 +26,7 @@ public class ProductRequest {
     @Size(max = 2000)
     private String description;
 
+    @NotNull
     @Min(0)
     private Integer availableQuantity;
 }

@@ -98,4 +98,47 @@ class ProductControllerTest {
         verify(productService, never())
                 .createProduct(any(ProductRequest.class));
     }
+
+    @Test
+    void createProductValidationWithBadPriceTest() throws Exception {
+
+        String invalidRequest = """
+                {
+                    "name": "Samsung",
+                    "price": 59999.999,
+                    "currency": "INR",
+                    "description": "Test Product",
+                    "availableQuantity": 10
+                }
+                """;
+
+        mockMvc.perform(post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequest))
+                .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+                .createProduct(any(ProductRequest.class));
+    }
+
+    @Test
+    void createProductValidationWithNoAvailableQuantityTest() throws Exception {
+
+        String invalidRequest = """
+                {
+                    "name": "Samsung",
+                    "price": 59999,
+                    "currency": "INR",
+                    "description": "Test Product",
+                }
+                """;
+
+        mockMvc.perform(post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequest))
+                .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+                .createProduct(any(ProductRequest.class));
+    }
 }
