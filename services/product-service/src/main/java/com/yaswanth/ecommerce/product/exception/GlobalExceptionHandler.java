@@ -25,7 +25,9 @@ public class GlobalExceptionHandler {
                 .stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
-                        FieldError::getDefaultMessage,
+                        fieldError ->
+                                fieldError.getDefaultMessage() != null ?
+                                        fieldError.getDefaultMessage() : "invalid value",
                         (existing, replacement) -> existing
                 ));
 
