@@ -1,4 +1,4 @@
-package com.yaswanth.ecommerce.product.dto;
+package com.yaswanth.ecommerce.product.model;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.yaswanth.ecommerce.product.service;
 
-import com.yaswanth.ecommerce.product.dto.ProductRequest;
-import com.yaswanth.ecommerce.product.dto.ProductResponse;
+import com.yaswanth.ecommerce.product.model.ProductRequest;
+import com.yaswanth.ecommerce.product.model.ProductResponse;
 import com.yaswanth.ecommerce.product.entity.Product;
 import com.yaswanth.ecommerce.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
