@@ -1,7 +1,7 @@
 package com.yaswanth.ecommerce.product.controller;
 
-import com.yaswanth.ecommerce.product.dto.ProductRequest;
-import com.yaswanth.ecommerce.product.dto.ProductResponse;
+import com.yaswanth.ecommerce.product.model.ProductRequest;
+import com.yaswanth.ecommerce.product.model.ProductResponse;
 import com.yaswanth.ecommerce.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

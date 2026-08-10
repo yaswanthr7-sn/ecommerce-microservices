@@ -1,7 +1,7 @@
 package com.yaswanth.ecommerce.product.controller;
 
-import com.yaswanth.ecommerce.product.dto.ProductRequest;
-import com.yaswanth.ecommerce.product.dto.ProductResponse;
+import com.yaswanth.ecommerce.product.model.ProductRequest;
+import com.yaswanth.ecommerce.product.model.ProductResponse;
 import com.yaswanth.ecommerce.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +137,34 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidRequest))
                 .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+                .createProduct(any(ProductRequest.class));
+    }
+
+    @Test
+    void createProductValidationReturnsCustomErrorTest() throws Exception {
+
+        String invalidRequest = """
+                {
+                    "name": "",
+                    "price": 59999.999,
+                    "currency": "IN",
+                    "description": "Test Product",
+                    "availableQuantity": -1
+                }
+                """;
+
+        mockMvc.perform(post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequest))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.path").value("/products"))
+                .andExpect(jsonPath("$.errors.name").exists())
+                .andExpect(jsonPath("$.errors.price").exists())
+                .andExpect(jsonPath("$.errors.currency").exists())
+                .andExpect(jsonPath("$.errors.availableQuantity").exists());
 
         verify(productService, never())
                 .createProduct(any(ProductRequest.class));
