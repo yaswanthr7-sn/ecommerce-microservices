@@ -1,6 +1,6 @@
-package com.yaswanth.ecommerce.product.exception;
+package com.yaswanth.ecommerce.order.exception;
 
-import com.yaswanth.ecommerce.product.model.ErrorResponse;
+import com.yaswanth.ecommerce.order.model.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

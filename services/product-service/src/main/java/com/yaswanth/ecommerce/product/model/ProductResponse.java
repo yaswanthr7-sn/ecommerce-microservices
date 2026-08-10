@@ -10,9 +10,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProductResponse {
 
-    UUID id;
-    String name;
-    BigDecimal price;
-    String currency;
+    private UUID id;
+    private String name;
+    private BigDecimal price;
+    private String currency;
 
 }

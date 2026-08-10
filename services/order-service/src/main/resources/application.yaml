@@ -1,9 +1,9 @@
 spring:
   application:
-    name: product-service
+    name: order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/product_db
+    url: jdbc:postgresql://localhost:5432/order_db
     username: postgres
     password: postgres
 
@@ -12,4 +12,4 @@ spring:
       ddl-auto: update
 
 server:
-  port: 8080
+  port: 8081
