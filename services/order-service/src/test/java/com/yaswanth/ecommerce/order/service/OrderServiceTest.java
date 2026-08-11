@@ -1,9 +1,13 @@
 package com.yaswanth.ecommerce.order.service;
 
 import com.yaswanth.ecommerce.order.OrderStatus;
+import com.yaswanth.ecommerce.order.PaymentStatus;
+import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
 import com.yaswanth.ecommerce.order.model.OrderRequest;
 import com.yaswanth.ecommerce.order.model.OrderResponse;
+import com.yaswanth.ecommerce.order.model.PaymentRequest;
+import com.yaswanth.ecommerce.order.model.PaymentResponse;
 import com.yaswanth.ecommerce.order.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +21,16 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private PaymentClient paymentClient;
 
     @InjectMocks
     private OrderService orderService;
@@ -43,6 +49,7 @@ public class OrderServiceTest {
     void createOrderTest() {
 
         UUID productId = UUID.randomUUID();
+        UUID orderId = UUID.randomUUID();
 
         OrderRequest orderRequest = new OrderRequest(
                 productId,
@@ -52,7 +59,25 @@ public class OrderServiceTest {
         );
 
         when(orderRepository.save(any(Order.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation -> {
+                    Order order = invocation.getArgument(0);
+                    if (order.getId() == null) {
+                        order.setId(orderId);
+                    }
+                    return order;
+                });
+
+        PaymentResponse paymentResponse =
+                new PaymentResponse(
+                        UUID.randomUUID(),
+                        orderId,
+                        new BigDecimal("59999"),
+                        "INR",
+                        PaymentStatus.SUCCESS
+                );
+
+        when(paymentClient.makePayment(any(PaymentRequest.class)))
+                .thenReturn(paymentResponse);
 
         OrderResponse result = orderService.createOrder(orderRequest);
 
@@ -60,9 +85,10 @@ public class OrderServiceTest {
         assertEquals(2, result.getQuantity());
         assertEquals(new BigDecimal("59999"), result.getAmount());
         assertEquals("INR", result.getCurrency());
-        assertEquals(OrderStatus.CREATED, result.getStatus());
+        assertEquals(OrderStatus.CONFIRMED, result.getStatus());
 
-        verify(orderRepository).save(any(Order.class));
+        verify(orderRepository, times(2)).save(any(Order.class));
+        verify(paymentClient).makePayment(any(PaymentRequest.class));
     }
 
 }
