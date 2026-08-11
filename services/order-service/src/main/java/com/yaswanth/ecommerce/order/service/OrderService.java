@@ -2,12 +2,10 @@ package com.yaswanth.ecommerce.order.service;
 
 import com.yaswanth.ecommerce.order.OrderStatus;
 import com.yaswanth.ecommerce.order.PaymentStatus;
+import com.yaswanth.ecommerce.order.component.OrderEventProducer;
 import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
-import com.yaswanth.ecommerce.order.model.OrderRequest;
-import com.yaswanth.ecommerce.order.model.OrderResponse;
-import com.yaswanth.ecommerce.order.model.PaymentRequest;
-import com.yaswanth.ecommerce.order.model.PaymentResponse;
+import com.yaswanth.ecommerce.order.model.*;
 import com.yaswanth.ecommerce.order.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
-    public final OrderRepository orderRepository;
-    public final PaymentClient paymentClient;
+    private final OrderRepository orderRepository;
+    private final PaymentClient paymentClient;
+    private final OrderEventProducer orderEventProducer;
 
     public List<OrderResponse> getOrders() {
         return orderRepository.findAll()
@@ -39,7 +38,7 @@ public class OrderService {
 
         PaymentResponse paymentResponse =
                 paymentClient.makePayment(
-                                new PaymentRequest(
+                        new PaymentRequest(
                                 order.getId(),
                                 order.getAmount(),
                                 order.getCurrency()
@@ -52,6 +51,16 @@ public class OrderService {
         }
 
         Order savedOrder = orderRepository.save(order);
+
+        if (savedOrder.getStatus() == OrderStatus.CONFIRMED) {
+            OrderCreatedEvent event = new OrderCreatedEvent(
+                    savedOrder.getId(),
+                    savedOrder.getAmount(),
+                    savedOrder.getCurrency()
+            );
+
+            orderEventProducer.publishOrderCreated(event);
+        }
 
         return convertOrderToOrderResponse(savedOrder);
     }

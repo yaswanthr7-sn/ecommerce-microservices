@@ -45,7 +45,7 @@ public class PaymentService {
                 .orderId(paymentRequest.getOrderId())
                 .amount(paymentRequest.getAmount())
                 .currency(paymentRequest.getCurrency())
-                .status(PaymentStatus.PENDING)
+                .status(PaymentStatus.SUCCESS)
                 .build();
     }
 }

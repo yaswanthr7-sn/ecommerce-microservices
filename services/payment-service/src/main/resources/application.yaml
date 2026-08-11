@@ -11,5 +11,17 @@ spring:
     hibernate:
       ddl-auto: update
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: payment-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        "[spring.json.value.default.type]": com.yaswanth.ecommerce.payment.model.OrderCreatedEvent
+        "[spring.json.trusted.packages]": com.yaswanth.ecommerce.payment.model
+        "[spring.json.use.type.headers]": false
+
 server:
   port: 8082
