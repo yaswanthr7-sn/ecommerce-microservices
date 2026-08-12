@@ -1,6 +1,8 @@
 package com.yaswanth.ecommerce.payment.service;
 
-import com.yaswanth.ecommerce.payment.PaymentStatus;
+import com.yaswanth.ecommerce.payment.component.factory.PaymentStrategyFactory;
+import com.yaswanth.ecommerce.payment.enums.PaymentStatus;
+import com.yaswanth.ecommerce.payment.interfaces.PaymentStrategy;
 import com.yaswanth.ecommerce.payment.model.PaymentRequest;
 import com.yaswanth.ecommerce.payment.model.PaymentResponse;
 import com.yaswanth.ecommerce.payment.entity.Payment;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PaymentService {
 
     public final PaymentRepository paymentRepository;
+    private final PaymentStrategyFactory paymentStrategyFactory;
 
     public List<PaymentResponse> getPayments() {
         return paymentRepository.findAll()
@@ -26,6 +29,10 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse createPayment(PaymentRequest paymentRequest) {
+        PaymentStrategy strategy =
+                paymentStrategyFactory.getStrategy(paymentRequest.getPaymentType());
+
+        PaymentStatus status = strategy.process(paymentRequest);
         return convertPaymentToPaymentResponse(
                 paymentRepository.save(
                         convertPaymentRequestToPayment(paymentRequest)));
@@ -46,6 +53,7 @@ public class PaymentService {
                 .amount(paymentRequest.getAmount())
                 .currency(paymentRequest.getCurrency())
                 .status(PaymentStatus.SUCCESS)
+                .paymentType(paymentRequest.getPaymentType())
                 .build();
     }
 }

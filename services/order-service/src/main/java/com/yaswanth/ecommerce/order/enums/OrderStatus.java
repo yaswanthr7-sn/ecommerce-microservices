@@ -1,4 +1,4 @@
-package com.yaswanth.ecommerce.order;
+package com.yaswanth.ecommerce.order.enums;
 
 public enum OrderStatus {
     CREATED,

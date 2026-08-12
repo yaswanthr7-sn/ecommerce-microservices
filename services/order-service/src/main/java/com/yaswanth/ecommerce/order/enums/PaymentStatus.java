@@ -1,4 +1,4 @@
-package com.yaswanth.ecommerce.payment;
+package com.yaswanth.ecommerce.order.enums;
 
 public enum PaymentStatus {
     PENDING,

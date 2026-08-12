@@ -1,9 +1,11 @@
 package com.yaswanth.ecommerce.order.service;
 
-import com.yaswanth.ecommerce.order.OrderStatus;
-import com.yaswanth.ecommerce.order.PaymentStatus;
+import com.yaswanth.ecommerce.order.component.OrderEventProducer;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
+import com.yaswanth.ecommerce.order.enums.PaymentType;
 import com.yaswanth.ecommerce.order.model.OrderRequest;
 import com.yaswanth.ecommerce.order.model.OrderResponse;
 import com.yaswanth.ecommerce.order.model.PaymentRequest;
@@ -32,6 +34,9 @@ public class OrderServiceTest {
     @Mock
     private PaymentClient paymentClient;
 
+    @Mock
+    private OrderEventProducer orderEventProducer;
+
     @InjectMocks
     private OrderService orderService;
 
@@ -55,7 +60,8 @@ public class OrderServiceTest {
                 productId,
                 2,
                 new BigDecimal("59999"),
-                "INR"
+                "INR",
+                PaymentType.UPI
         );
 
         when(orderRepository.save(any(Order.class)))

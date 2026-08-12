@@ -1,6 +1,9 @@
 package com.yaswanth.ecommerce.payment.service;
 
-import com.yaswanth.ecommerce.payment.PaymentStatus;
+import com.yaswanth.ecommerce.payment.component.factory.PaymentStrategyFactory;
+import com.yaswanth.ecommerce.payment.enums.PaymentStatus;
+import com.yaswanth.ecommerce.payment.enums.PaymentType;
+import com.yaswanth.ecommerce.payment.interfaces.PaymentStrategy;
 import com.yaswanth.ecommerce.payment.model.PaymentRequest;
 import com.yaswanth.ecommerce.payment.model.PaymentResponse;
 import com.yaswanth.ecommerce.payment.entity.Payment;
@@ -26,6 +29,12 @@ public class PaymentServiceTest {
     @Mock
     private PaymentRepository paymentRepository;
 
+    @Mock
+    private PaymentStrategyFactory paymentStrategyFactory;
+
+    @Mock
+    private PaymentStrategy paymentStrategy;
+
     @InjectMocks
     private PaymentService paymentService;
 
@@ -47,18 +56,24 @@ public class PaymentServiceTest {
         PaymentRequest paymentRequest = new PaymentRequest(
                 orderId,
                 new BigDecimal("59999"),
-                "INR"
+                "INR",
+                PaymentType.CARD
         );
 
         when(paymentRepository.save(any(Payment.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
+        when(paymentStrategyFactory.getStrategy(any(PaymentType.class)))
+                .thenReturn(paymentStrategy);
+
+        when(paymentStrategy.process(any(PaymentRequest.class)))
+                .thenReturn(PaymentStatus.SUCCESS);
 
         PaymentResponse result =
                 paymentService.createPayment(paymentRequest);
 
         assertEquals(orderId, result.getOrderId());
         assertEquals(new BigDecimal("59999"), result.getAmount());
-        assertEquals(PaymentStatus.PENDING, result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS, result.getStatus());
 
         verify(paymentRepository).save(any(Payment.class));
     }

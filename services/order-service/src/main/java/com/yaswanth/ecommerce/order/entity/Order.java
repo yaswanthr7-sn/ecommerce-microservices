@@ -1,6 +1,7 @@
 package com.yaswanth.ecommerce.order.entity;
 
-import com.yaswanth.ecommerce.order.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -37,4 +38,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 }

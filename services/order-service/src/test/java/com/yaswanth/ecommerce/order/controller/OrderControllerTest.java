@@ -1,6 +1,6 @@
 package com.yaswanth.ecommerce.order.controller;
 
-import com.yaswanth.ecommerce.order.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
 import com.yaswanth.ecommerce.order.model.OrderRequest;
 import com.yaswanth.ecommerce.order.model.OrderResponse;
 import com.yaswanth.ecommerce.order.service.OrderService;
@@ -67,7 +67,8 @@ class OrderControllerTest {
                     "productId": "%s",
                     "quantity": 2,
                     "amount": 59999,
-                    "currency": "INR"
+                    "currency": "INR",
+                    "paymentType": "UPI"
                 }
                 """.formatted(productId);
 

@@ -1,6 +1,7 @@
 package com.yaswanth.ecommerce.payment.entity;
 
-import com.yaswanth.ecommerce.payment.PaymentStatus;
+import com.yaswanth.ecommerce.payment.enums.PaymentStatus;
+import com.yaswanth.ecommerce.payment.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,4 +33,7 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 }

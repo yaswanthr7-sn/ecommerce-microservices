@@ -1,5 +1,6 @@
 package com.yaswanth.ecommerce.order.model;
 
+import com.yaswanth.ecommerce.order.enums.PaymentType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +29,7 @@ public class OrderRequest {
     @NotBlank
     @Size(min = 3, max = 3)
     private String currency;
+
+    @NotNull
+    private PaymentType paymentType;
 }
