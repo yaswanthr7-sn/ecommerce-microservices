@@ -1,7 +1,7 @@
 package com.yaswanth.ecommerce.order.service;
 
-import com.yaswanth.ecommerce.order.OrderStatus;
-import com.yaswanth.ecommerce.order.PaymentStatus;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.component.OrderEventProducer;
 import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
@@ -41,7 +41,8 @@ public class OrderService {
                         new PaymentRequest(
                                 order.getId(),
                                 order.getAmount(),
-                                order.getCurrency()
+                                order.getCurrency(),
+                                order.getPaymentType()
                         ));
 
         if (paymentResponse.getStatus() == PaymentStatus.SUCCESS) {
@@ -82,6 +83,7 @@ public class OrderService {
                 .amount(orderRequest.getAmount())
                 .currency(orderRequest.getCurrency())
                 .status(OrderStatus.CREATED)
+                .paymentType(orderRequest.getPaymentType())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.yaswanth.ecommerce.payment.controller;
 
-import com.yaswanth.ecommerce.payment.PaymentStatus;
+import com.yaswanth.ecommerce.payment.enums.PaymentStatus;
 import com.yaswanth.ecommerce.payment.model.PaymentRequest;
 import com.yaswanth.ecommerce.payment.model.PaymentResponse;
 import com.yaswanth.ecommerce.payment.service.PaymentService;
@@ -55,7 +55,7 @@ class PaymentControllerTest {
                         orderId,
                         new BigDecimal("59999"),
                         "INR",
-                        PaymentStatus.PENDING
+                        PaymentStatus.SUCCESS
                 );
 
         when(paymentService.createPayment(any(PaymentRequest.class)))
@@ -65,7 +65,8 @@ class PaymentControllerTest {
                 {
                     "orderId": "%s",
                     "amount": 59999,
-                    "currency": "INR"
+                    "currency": "INR",
+                    "paymentType": "UPI"
                 }
                 """.formatted(orderId);
 
@@ -76,7 +77,7 @@ class PaymentControllerTest {
                 .andExpect(jsonPath("$.id").value(paymentId.toString()))
                 .andExpect(jsonPath("$.orderId").value(orderId.toString()))
                 .andExpect(jsonPath("$.amount").value(59999))
-                .andExpect(jsonPath("$.status").value("PENDING"));
+                .andExpect(jsonPath("$.status").value("SUCCESS"));
 
         verify(paymentService).createPayment(any(PaymentRequest.class));
     }

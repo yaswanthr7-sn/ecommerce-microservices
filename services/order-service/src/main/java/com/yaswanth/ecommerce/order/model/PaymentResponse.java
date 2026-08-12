@@ -1,6 +1,6 @@
 package com.yaswanth.ecommerce.order.model;
 
-import com.yaswanth.ecommerce.order.PaymentStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
