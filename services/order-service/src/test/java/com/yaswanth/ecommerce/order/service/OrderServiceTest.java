@@ -1,10 +1,10 @@
 package com.yaswanth.ecommerce.order.service;
 
 import com.yaswanth.ecommerce.order.component.OrderEventProducer;
-import com.yaswanth.ecommerce.order.enums.OrderStatus;
-import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.enums.PaymentType;
 import com.yaswanth.ecommerce.order.model.OrderRequest;
 import com.yaswanth.ecommerce.order.model.OrderResponse;
@@ -16,9 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,9 +44,11 @@ public class OrderServiceTest {
 
     @Test
     public void getOrdersTest() {
-        when(orderRepository.findAll())
-                .thenReturn(List.of());
-        List<OrderResponse> result = orderService.getOrders();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(orderRepository.findAll(pageable))
+                .thenReturn(Page.empty());
+        Page<OrderResponse> result = orderService.getOrders(pageable);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());

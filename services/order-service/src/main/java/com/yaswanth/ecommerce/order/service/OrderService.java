@@ -1,17 +1,17 @@
 package com.yaswanth.ecommerce.order.service;
 
-import com.yaswanth.ecommerce.order.enums.OrderStatus;
-import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.component.OrderEventProducer;
 import com.yaswanth.ecommerce.order.component.PaymentClient;
 import com.yaswanth.ecommerce.order.entity.Order;
+import com.yaswanth.ecommerce.order.enums.OrderStatus;
+import com.yaswanth.ecommerce.order.enums.PaymentStatus;
 import com.yaswanth.ecommerce.order.model.*;
 import com.yaswanth.ecommerce.order.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +21,9 @@ public class OrderService {
     private final PaymentClient paymentClient;
     private final OrderEventProducer orderEventProducer;
 
-    public List<OrderResponse> getOrders() {
-        return orderRepository.findAll()
-                .stream()
-                .map(this::convertOrderToOrderResponse)
-                .toList();
+    public Page<OrderResponse> getOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable)
+                .map(this::convertOrderToOrderResponse);
     }
 
     @Transactional
