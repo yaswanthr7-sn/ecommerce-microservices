@@ -6,6 +6,7 @@ import com.yaswanth.ecommerce.product.entity.Product;
 import com.yaswanth.ecommerce.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class ProductService {
 
     public final ProductRepository productRepository;
 
+    @Cacheable("products")
     public List<ProductResponse> getProducts() {
         return productRepository.findAll()
                 .stream()
