@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8084
+
+jwt:
+  keystore:
+    path: classpath:certs/jwt-keystore.p12
+    password: ${JWT_KEYSTORE_PASSWORD}
+    alias: jwt-key

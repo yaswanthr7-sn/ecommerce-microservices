@@ -22,5 +22,10 @@ spring:
               predicates:
                 - Path=/payments/**
 
+            - id: auth-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/users/**,/auth/**
+
 server:
   port: 8080

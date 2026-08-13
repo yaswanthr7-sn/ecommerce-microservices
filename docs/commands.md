@@ -8,3 +8,7 @@ docker ps
 
 # logs #
 docker logs ecommerce-postgres
+
+# check database #
+docker exec -it ecommerce-postgres psql -U postgres
+docker exec -it ecommerce-postgres psql -U postgres -d auth_db
