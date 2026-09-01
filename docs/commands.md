@@ -12,3 +12,8 @@ docker logs ecommerce-postgres
 # check database #
 docker exec -it ecommerce-postgres psql -U postgres
 docker exec -it ecommerce-postgres psql -U postgres -d auth_db
+
+# startup in new env
+chmod +x mvnw
+./mvnw spring-boot:run
+mvn spring-boot:run
