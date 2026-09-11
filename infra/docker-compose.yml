@@ -38,5 +38,53 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
+  auth-service:
+    image: ecommerce-auth-service:1.0
+    container_name: ecommerce-auth-service
+
+    environment:
+      DB_HOST: postgres
+      JWT_KEYSTORE_PASSWORD: ${JWT_KEYSTORE_PASSWORD}
+
+    ports:
+      - "8084:8084"
+
+  product-service:
+    image: ecommerce-product-service:1.0
+    container_name: ecommerce-product-service
+
+    environment:
+      DB_HOST: postgres
+
+    ports:
+      - "8083:8083"
+
+  order-service:
+    image: ecommerce-order-service:1.0
+    container_name: ecommerce-order-service
+
+    environment:
+      DB_HOST: postgres
+
+    ports:
+      - "8081:8081"
+
+  payment-service:
+    image: ecommerce-payment-service:1.0
+    container_name: ecommerce-payment-service
+
+    environment:
+      DB_HOST: postgres
+
+    ports:
+      - "8082:8082"
+
+  api-gateway:
+    image: ecommerce-api-gateway:1.0
+    container_name: ecommerce-api-gateway
+
+    ports:
+      - "8080:8080"
+
 volumes:
   postgres-data:
