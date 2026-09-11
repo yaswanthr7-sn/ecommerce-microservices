@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -31,6 +31,5 @@ resilience4j:
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 2
 
-logging:
-  level:
-    io.github.resilience4j.circuitbreaker: DEBUG
+payment-service:
+  url: ${PAYMENT_SERVICE_URL:http://localhost:8082}
